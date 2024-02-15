@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+    <!-- Icon Source -->
+    <script
+      src="https://kit.fontawesome.com/466f325afd.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Styling -->
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        background-image: url(gamebg.jpg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+      }
+
+      .row {
+        display: flex;
+      }
+
+      .cell {
+        width: 60px;
+        height: 60px;
+        background-color: #8fc7a04d;
+        border: 1px solid #d6d6d6f7;
+        border-radius: 4.5px;
+        padding: 9px;
+        margin: 1px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 29px;
+        cursor: pointer;
+        box-shadow: 0px 0px 19px rgba(192, 252, 250, 0.616);
+      }
+
+      .cell:hover {
+        background-color: #e9e9e9;
+      }
+      #replayButton {
+        margin-top: 27px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        background-color: #02948dc2;
+        color: #fffffff8;
+        border: none;
+        padding: 5px 107px;
+        font-size: 30px;
+        cursor: pointer;
+        border-radius: 92px;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #replayButton:hover {
+        background-color: #b9fffb1a;
+        box-shadow: 0px 0px 30px rgba(179, 255, 252, 0.7);
+      }
+      .title {
+        font-size: 30px;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        color: hsl(0, 0%, 99%);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const board = Array(9).fill(null);
+      const player = "X";
+      const computer = "O";
+
+      function checkForWinner(board) {
+        const lines = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8], // Rows
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8], // Columns
+          [0, 4, 8],
+          [2, 4, 6], // Diagonals
+        ];
+        for (let line of lines) {
+          const [a, b, c] = line;
+          if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            return board[a];
+          }
+        }
+        return null;
+      }
+
+      function makeMove(cell, index) {
+        if (board[index] || checkForWinner(board)) {
+          return;
+        }
+        cell.innerText = player;
+        board[index] = player;
+        const winner = checkForWinner(board);
+        if (winner) {
+          alert(
+            winner +
+              " Wins! 🎊🥳Congratulations To The Winner For Their Outstanding Achievement.....!🥳🎊"
+          );
+          return;
+        }
+        setTimeout(computerMove, 200);
+      }
+
+      function computerMove() {
+        const availablePositions = board
+          .map((val, idx) => (val === null ? idx : null))
+          .filter((val) => val !== null);
+        if (availablePositions.length === 0) {
+          alert("🤦🏻‍♂️ Draw! 🥺");
+          return;
+        }
+        const move =
+          availablePositions[
+            Math.floor(Math.random() * availablePositions.length)
+          ];
+        board[move] = computer;
+        document.querySelectorAll(".cell")[move].innerText = computer;
+        const winner = checkForWinner(board);
+        if (winner) {
+          alert(winner + " Wins!");
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Optional: Initialize or reset the game
+      });
+      // Add this function to reset the game
+      function resetGame() {
+        board.fill(null); // Reset the board array
+        document
+          .querySelectorAll(".cell")
+          .forEach((cell) => (cell.innerText = "")); // Clear all cells
+      }
+
+      // Add this at the bottom of your JavaScript file to listen for the replay button click
+      document.addEventListener("DOMContentLoaded", () => {
+        const replayButton = document.getElementById("replayButton");
+        replayButton.addEventListener("click", resetGame);
+      });
+    </script>
+    <h1></h1>
+    <div id="gameContainer">
+      <div class="title">Tic Tac Toe</div>
+      <div class="row">
+        <div class="cell" onclick="makeMove(this, 0)"></div>
+        <div class="cell" onclick="makeMove(this, 1)"></div>
+        <div class="cell" onclick="makeMove(this, 2)"></div>
+      </div>
+      <div class="row">
+        <div class="cell" onclick="makeMove(this, 3)"></div>
+        <div class="cell" onclick="makeMove(this, 4)"></div>
+        <div class="cell" onclick="makeMove(this, 5)"></div>
+      </div>
+      <div class="row">
+        <div class="cell" onclick="makeMove(this, 6)"></div>
+        <div class="cell" onclick="makeMove(this, 7)"></div>
+        <div class="cell" onclick="makeMove(this, 8)"></div>
+      </div>
+      <button id="replayButton">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+    </div>
+  </body>
+</html>
